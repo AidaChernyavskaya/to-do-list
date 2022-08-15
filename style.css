@@ -1,0 +1,84 @@
+@font-face {
+    font-family: "YandexSansDisplay";
+    font-style: normal;
+    font-weight: 400;
+    src: local("YandexSansDisplay-Regular"),
+    url("./fonts/YandexSansDisplay-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "YandexSansDisplay";
+    font-style: normal;
+    font-weight: 600;
+    src: local("YandexSansDisplay-Bold"),
+    url("./fonts/YandexSansDisplay-Bold.woff2") format("woff2");
+}
+
+body{
+    font-family: "YandexSansDisplay", "Arial", sans-serif;
+    font-size: 24px;
+    margin: 0;
+}
+
+.container{
+    width: 60%;
+    height: 100vh;
+    background-color: chartreuse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add_task{
+    display: flex;
+    align-items: center;
+    padding: 25px 0 15px;
+}
+
+.add_field{
+    width: 85%;
+    border-radius: 20px 0 0 20px;
+    height: 40px;
+    padding-left: 12px;
+}
+
+.add_button{
+    width: 15%;
+    border-radius: 0 20px 20px 0;
+    padding: 1px 0;
+}
+
+input{
+    border: none;
+    outline: none;
+    height: 42px;
+}
+
+.calendar{
+    background-color: palegoldenrod;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left{
+    transform: rotate(180deg);
+}
+
+.arrow{
+    width: 20px;
+    height: 20px;
+}
+
+.date{
+    background-color: yellow;
+    width: 5%;
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.tasks{
+    background-color: aquamarine;
+    height: 20%;
+}
