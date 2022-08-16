@@ -18,20 +18,24 @@ body{
     font-family: "YandexSansDisplay", "Arial", sans-serif;
     font-size: 24px;
     margin: 0;
+    background-color: #f2f3f4;
+    color: #25497b;
 }
 
 .container{
     width: 60%;
     height: 100vh;
-    background-color: chartreuse;
+    background-color: white;
     margin-left: auto;
     margin-right: auto;
+    border-radius: 10px;
 }
 
 .add_task{
     display: flex;
     align-items: center;
     padding: 25px 0 15px;
+    margin: 0 45px;
 }
 
 .add_field{
@@ -39,12 +43,30 @@ body{
     border-radius: 20px 0 0 20px;
     height: 40px;
     padding-left: 12px;
+    background-color: #e1e7e9;
+    font-size: 1rem;
 }
 
 .add_button{
     width: 15%;
     border-radius: 0 20px 20px 0;
     padding: 1px 0;
+    cursor: pointer;
+    background-color: #a7b9ca;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    height: 42px;
+    display: flex;
+    align-items: center;
+}
+
+p{
+    margin: 0 auto;
+}
+
+.add_button:hover{
+    background-color: #abcdef;
 }
 
 input{
@@ -54,11 +76,21 @@ input{
 }
 
 .calendar{
-    background-color: palegoldenrod;
-    height: 15%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 15px 15px;
+}
+
+.number{
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding-top: 3px;
+}
+
+.weekday{
+    font-size: 0.8rem;
+    margin-top: -3px;
 }
 
 .left{
@@ -71,14 +103,82 @@ input{
 }
 
 .date{
-    background-color: yellow;
-    width: 5%;
+    background-color: #b9d6ff;
+    width: 6%;
     font-size: 0.9rem;
     text-align: center;
     border-radius: 5px;
+    color: #6495ed;
+    cursor: pointer;
+}
+
+.date:hover, .date:active{
+    color: #25497b;
 }
 
 .tasks{
-    background-color: aquamarine;
     height: 20%;
+    margin: 40px 45px;
+    font-size: 1.1rem;
+}
+
+.block{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.tick{
+    height: 18px;
+    width: 18px;
+    background-color: #b9d6ff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.done .tick{
+    background-color: #25497b;
+}
+
+.done .name{
+    color: #a7b9ca;
+    text-decoration: line-through;
+}
+
+.trash{
+    width: 19px;
+    height: 19px;
+}
+
+.name{
+    width: 93%;
+}
+
+.delete{
+    margin: 5px 10px 0 5px;
+}
+
+.add{
+    display: none;
+}
+
+@media (max-width: 1050px) {
+    p{
+        display: none;
+    }
+
+    .add{
+        display: block;
+        width: 22px;
+        height: 22px;
+        margin: 0 auto;
+    }
+
+    .last{
+        display: none;
+    }
+
+    .date{
+        width: 10%;
+    }
 }
