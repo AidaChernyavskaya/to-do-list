@@ -61,7 +61,7 @@ body{
     align-items: center;
 }
 
-p{
+.button_name{
     margin: 0 auto;
 }
 
@@ -93,8 +93,12 @@ input{
     margin-top: -3px;
 }
 
-.left{
+.previous{
     transform: rotate(180deg);
+}
+
+.next{
+
 }
 
 .arrow{
@@ -116,13 +120,20 @@ input{
     color: #25497b;
 }
 
-.tasks{
+.days{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 93%;
+}
+
+.tasks_elements{
     height: 20%;
     margin: 40px 45px;
     font-size: 1.1rem;
 }
 
-.block{
+.task{
     display: flex;
     align-items: center;
     margin-bottom: 5px;
@@ -154,8 +165,16 @@ input{
     width: 93%;
 }
 
-.delete{
-    margin: 5px 10px 0 5px;
+.icon{
+    margin: 0 10px 0 5px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .add{
@@ -163,7 +182,7 @@ input{
 }
 
 @media (max-width: 1050px) {
-    p{
+    .button_name{
         display: none;
     }
 
