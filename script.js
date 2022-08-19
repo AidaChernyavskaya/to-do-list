@@ -1,12 +1,20 @@
-function html_ready() {
-    let date = new Date();
-    let weekdays = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-    let days = document.getElementById('days');
+const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 
-    let items_count = calculate_elements_amount(days);
-    create_days(items_count, days, weekdays, date);
+function html_ready() {
+    create_calendar(new Date());
 }
 
+// создадим календарь
+function create_calendar(start_date) {
+    let days = document.getElementById('days');
+
+    // заполним дни в календаре
+    let items_count = calculate_elements_amount(days);
+    for (let i = 0; i < items_count; i++) {
+        create_day(days, start_date);
+        start_date.setDate(start_date.getDate() + 1);
+    }
+}
 
 // определим количество добавляемых элементов в зависимости от ширины экрана
 function calculate_elements_amount(days){
@@ -17,11 +25,8 @@ function calculate_elements_amount(days){
     return(items_count);
 }
 
-
 // создадим и добавим "объекты" с текущей даты до...
-function create_days(items_count, days, weekdays, date){
-    for (let i = 0; i < items_count; i++) {
-
+function create_day(days, date){
         let item = document.createElement('div');
         item.classList.add('date');
         days.appendChild(item);
@@ -34,13 +39,8 @@ function create_days(items_count, days, weekdays, date){
         let item_weekday = document.createElement('div');
         item_weekday.classList.add('weekday');
         item.appendChild(item_weekday);
-        item_weekday.innerHTML = weekdays[date.getDay()];
-
-        date.setDate(date.getDate() + 1);
-
-    }
+        item_weekday.innerHTML = WEEKDAYS[date.getDay()];
 }
-
 
 // очищаем элемент days
 function clear_days(){
