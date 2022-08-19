@@ -1,7 +1,11 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+let k = 1;
 
 function html_ready() {
     create_calendar(new Date());
+
+    slide_next();
+    slide_previous();
 }
 
 // создадим календарь
@@ -43,14 +47,47 @@ function create_day(days, date){
 }
 
 // очищаем элемент days
-function clear_days(){
+function clear_calendar(){
     let days = document.getElementById('days');
     days.innerHTML = '';
+}
+
+function slide_next(){
+    let next = document.getElementById('next');
+    next.onclick = create_next_calendar;
+}
+
+function slide_previous(){
+    let previous = document.getElementById('previous');
+    previous.onclick = create_previous_calendar;
+}
+
+function create_next_calendar(){
+    let current_date = new Date();
+    current_date.setDate(current_date.getDate() + k);
+    console.log(current_date);
+
+    clear_calendar();
+    create_calendar(current_date);
+
+    k++;
+}
+
+function create_previous_calendar(){
+    let current_date = new Date();
+    current_date.setDate(current_date.getDate() + k - 1);
+    current_date.setDate(current_date.getDate() - 1);
+    console.log(current_date);
+
+    clear_calendar();
+    create_calendar(current_date);
+
+    k--;
 }
 
 document.addEventListener("DOMContentLoaded", html_ready);
 
 window.addEventListener('resize',function(){
-    clear_days();
+    clear_calendar();
     html_ready();
 });
