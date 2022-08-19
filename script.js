@@ -1,5 +1,5 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-let k = 1;
+let k = 1; //offset
 
 function html_ready() {
     create_calendar(new Date());
@@ -31,30 +31,28 @@ function calculate_elements_amount(days){
 
 // создадим и добавим "объекты" с текущей даты до...
 function create_day(days, date){
-        let item = document.createElement('div');
-        item.classList.add('date');
-        days.appendChild(item);
+    let item = document.createElement('div');
+    item.classList.add('date');
+    days.appendChild(item);
 
-        let item_day = document.createElement('div');
-        item_day.classList.add('number');
-        item.appendChild(item_day);
-        item_day.innerHTML = String(date.getDate());
+    let item_day = document.createElement('div');
+    item_day.classList.add('number');
+    item.appendChild(item_day);
+    item_day.innerHTML = String(date.getDate());
 
-        let item_weekday = document.createElement('div');
-        item_weekday.classList.add('weekday');
-        item.appendChild(item_weekday);
-        item_weekday.innerHTML = WEEKDAYS[date.getDay()];
+    let item_weekday = document.createElement('div');
+    item_weekday.classList.add('weekday');
+    item.appendChild(item_weekday);
+    item_weekday.innerHTML = WEEKDAYS[date.getDay()];
 }
 
 // очищаем элемент days
 function clear_calendar(){
-    let days = document.getElementById('days');
-    days.innerHTML = '';
+    document.getElementById('days').innerHTML = '';
 }
 
 function slide_next(){
-    let next = document.getElementById('next');
-    next.onclick = create_next_calendar;
+    document.getElementById('next').onclick = create_next_calendar;
 }
 
 function slide_previous(){
@@ -86,6 +84,15 @@ function create_previous_calendar(){
 }
 
 document.addEventListener("DOMContentLoaded", html_ready);
+
+document.addEventListener('keydown', function(event) {
+    if (event.key == 'ArrowRight') {
+        create_next_calendar();
+    }
+    if (event.key == 'ArrowLeft') {
+        create_previous_calendar();
+    }
+});
 
 window.addEventListener('resize',function(){
     clear_calendar();
