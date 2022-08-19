@@ -93,6 +93,10 @@ input{
     margin-top: -3px;
 }
 
+.date:first-child{
+    color: #25497b;
+}
+
 .previous{
     transform: rotate(180deg);
 }
@@ -108,7 +112,8 @@ input{
 
 .date{
     background-color: #b9d6ff;
-    width: 6%;
+    width: 50px;
+    margin: 0 5px;
     font-size: 0.9rem;
     text-align: center;
     border-radius: 5px;
@@ -124,7 +129,7 @@ input{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 93%;
+    width: 100%;
 }
 
 .tasks_elements{
@@ -193,11 +198,13 @@ input{
         margin: 0 auto;
     }
 
-    .last{
-        display: none;
+    .container{
+        width: 80%;
     }
+}
 
-    .date{
-        width: 10%;
+@media (max-width: 800px) {
+    .container{
+        width: 100%;
     }
 }

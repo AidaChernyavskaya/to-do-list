@@ -1,31 +1,29 @@
-let tasks = []
-
-function ready() {
-    // получить текущую дату
+function html_ready() {
     let date = new Date();
     let weekdays = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-
-
-    //первый день = сегодняшняя дата
-    let day = document.getElementById('day');
-    day.innerHTML = String(date.getDate());
-
-    let weekday = document.getElementById('weekday');
-    weekday.innerHTML = weekdays[date.getDay()];
-
-
-    // добавить "объекты" начиная с текущей даты до ...
-    // получить calendar
     let days = document.getElementById('days');
 
-    for (let i = 0; i < 13; i++) {
-        date.setDate(date.getDate() + 1);
+    let items_count = calculate_elements_amount(days);
+    create_days(items_count, days, weekdays, date);
+}
+
+
+// определим количество добавляемых элементов в зависимости от ширины экрана
+function calculate_elements_amount(days){
+    let width_container = days.offsetWidth;
+    let width_item = 60;
+    let items_count = Math.trunc(width_container / width_item);
+
+    return(items_count);
+}
+
+
+// создадим и добавим "объекты" с текущей даты до...
+function create_days(items_count, days, weekdays, date){
+    for (let i = 0; i < items_count; i++) {
 
         let item = document.createElement('div');
         item.classList.add('date');
-        if (i > 5){
-            item.classList.add('last');
-        }
         days.appendChild(item);
 
         let item_day = document.createElement('div');
@@ -37,9 +35,22 @@ function ready() {
         item_weekday.classList.add('weekday');
         item.appendChild(item_weekday);
         item_weekday.innerHTML = weekdays[date.getDay()];
-    }
 
+        date.setDate(date.getDate() + 1);
+
+    }
 }
 
 
-document.addEventListener("DOMContentLoaded", ready);
+// очищаем элемент days
+function clear_days(){
+    let days = document.getElementById('days');
+    days.innerHTML = '';
+}
+
+document.addEventListener("DOMContentLoaded", html_ready);
+
+window.addEventListener('resize',function(){
+    clear_days();
+    html_ready();
+});
