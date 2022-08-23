@@ -2,9 +2,9 @@ const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 let k = 1; //offset
 
 let tasks = {
-    "23-08-2022": [
+    "23-8-2022": [
         {"title": "Помыть посуду", "done": false},
-        {"title": "Помыть посуду2", "done": true}
+        {"title": "Покормить Виталечку", "done": true}
     ]
 }
 
@@ -12,6 +12,8 @@ function html_ready() {
     create_calendar(new Date());
 
     init_events_handlers();
+
+    show_current_date_tasks();
 }
 
 // создадим календарь
@@ -57,6 +59,10 @@ function clear_calendar(){
     document.getElementById('days').innerHTML = '';
 }
 
+function clear_tasks(){
+    document.getElementById('tasks_elements').innerHTML = '';
+}
+
 // "перелистывание" календаря на 1 день вперед
 function create_next_calendar(){
     let current_date = new Date();
@@ -87,16 +93,43 @@ function add_task(){
         title: document.getElementById('add_field').value,
         done: false
     }
-    tasks["23-08-2022"].push(task_obj);
+    tasks["23-8-2022"].push(task_obj);
 
+    update_current_day_tasks();
+}
+
+function update_current_day_tasks(){
+    clear_tasks();
+    show_current_date_tasks();
+}
+
+function show_current_date_tasks(){
+    let current_day = new Date();
+    let day = date_to_str(current_day);
+
+    console.log(day);
+    console.log(tasks[day]);
+
+    let current_day_tasks = tasks[day];
+    console.log(current_day_tasks.length);
+
+    for (let i = 0; i < current_day_tasks.length; i++){
+        show_task(current_day_tasks[i]);
+    }
+}
+
+function show_task(current_day_task){
     let tasks_elements = document.getElementById('tasks_elements');
     let task = document.createElement('div');
     task.classList.add('task');
+    if (current_day_task.done){
+        task.classList.add('done');
+    }
     tasks_elements.appendChild(task);
 
     let name = document.createElement('div');
     name.classList.add('name');
-    name.innerHTML = task_obj.title;
+    name.innerHTML = current_day_task.title;
     task.appendChild(name);
 
     let icon = document.createElement('div');
@@ -111,7 +144,11 @@ function add_task(){
     let tick = document.createElement('div');
     tick.classList.add('tick');
     task.appendChild(tick);
+}
 
+function date_to_str(current_day){
+    let day_str = `${current_day.getDate()}-${(current_day.getMonth() + 1)}-${current_day.getFullYear()}`;
+    return day_str;
 }
 
 function init_events_handlers(){
@@ -140,26 +177,4 @@ window.addEventListener('resize',function(){
     clear_calendar();
     html_ready();
 });
-
-
-
-
-//
-// let current_day = Date();
-//
-// const show_current_day_tasks = () => {
-//     let current_day_tasks = tasks[current_day];
-//     for task in current_day_tasks:
-//         show_task(task);
-// }
-//
-// const add_task = () => {
-//     tasks[current_day].push({})
-//     update_current_day_tasks()
-// }
-//
-// const update_current_day_tasks = () => {
-//     clear_tasks();
-//     show_current_day_tasks();
-// }
 
