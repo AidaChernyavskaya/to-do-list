@@ -9,9 +9,9 @@
 <body>
     <div class="container">
         <div class="add_task">
-            <input type="text" class="add_field" name="task" placeholder="Введите задачу">
-            <button class="add_button">
-                <p class="button_name">Добавить</p>
+            <input id="add_field" type="text" class="add_field" name="task" placeholder="Введите задачу">
+            <button id="add_button" class="add_button">
+                <div class="button_name">Добавить</div>
                 <img src="./images/plus.png" alt="Добавить" class="add">
             </button>
         </div>
@@ -22,7 +22,7 @@
             <input type="image" src="./images/arrow.png" alt="Назад" class="arrow next" id="next">
         </div>
 
-        <div class="tasks_elements">
+        <div class="tasks_elements" id="tasks_elements">
             <div class="task">
                 <div class="name">Полить цветы</div>
                 <div class="icon">
