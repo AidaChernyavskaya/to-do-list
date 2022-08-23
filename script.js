@@ -8,6 +8,8 @@ let tasks = {
     ]
 }
 
+let current_date = Date();
+
 function html_ready() {
     create_calendar(new Date());
 
@@ -96,6 +98,7 @@ function add_task(){
     tasks["23-8-2022"].push(task_obj);
 
     update_current_day_tasks();
+    document.getElementById('add_field').value = '';
 }
 
 function update_current_day_tasks(){
@@ -144,6 +147,14 @@ function show_task(current_day_task){
     let tick = document.createElement('div');
     tick.classList.add('tick');
     task.appendChild(tick);
+    tick.onclick = () => {
+        mark_as_done(tick.parentNode);
+    }
+
+}
+
+function mark_as_done(task){
+    task.classList.toggle('done');
 }
 
 function date_to_str(current_day){
