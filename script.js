@@ -1,14 +1,14 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 let k = 1; //offset
 
-let tasks = {
-    "23-8-2022": [
-        {"title": "Помыть посуду", "done": false},
-        {"title": "Покормить Виталечку", "done": true}
-    ]
-}
+// let tasks = {
+//     "24-8-2022": [
+//         {"title": "Помыть посуду", "done": false},
+//         {"title": "Покормить Виталечку", "done": true}
+//     ]
+// }
 
-let current_date = Date();
+// let current_date = Date();
 
 function html_ready() {
     create_calendar(new Date());
@@ -95,8 +95,11 @@ function add_task(){
         title: document.getElementById('add_field').value,
         done: false
     }
-    tasks["23-8-2022"].push(task_obj);
 
+    let key = generate_key_by_date(new Date());
+    let tasks = get_day_tasks_from_storage(key);
+    tasks.push(task_obj);
+    update_day_tasks_in_storage(key, tasks);
     update_current_day_tasks();
     document.getElementById('add_field').value = '';
 }
@@ -107,17 +110,10 @@ function update_current_day_tasks(){
 }
 
 function show_current_date_tasks(){
-    let current_day = new Date();
-    let day = date_to_str(current_day);
-
-    console.log(day);
-    console.log(tasks[day]);
-
-    let current_day_tasks = tasks[day];
-    console.log(current_day_tasks.length);
-
-    for (let i = 0; i < current_day_tasks.length; i++){
-        show_task(current_day_tasks[i]);
+    let key = generate_key_by_date(new Date());
+    let tasks = get_day_tasks_from_storage(key);
+    for (let i = 0; i < tasks.length; i++){
+        show_task(tasks[i]);
     }
 }
 
@@ -157,9 +153,8 @@ function mark_as_done(task){
     task.classList.toggle('done');
 }
 
-function date_to_str(current_day){
-    let day_str = `${current_day.getDate()}-${(current_day.getMonth() + 1)}-${current_day.getFullYear()}`;
-    return day_str;
+function generate_key_by_date(date) {
+    return `tasks_${date.getDate()}-${(date.getMonth() + 1)}-${date.getFullYear()}`;
 }
 
 function init_events_handlers(){
@@ -186,6 +181,21 @@ document.addEventListener('keydown', function(event) {
 // изменение элементов при динамически изменяемой ширине экрана
 window.addEventListener('resize',function(){
     clear_calendar();
-    html_ready();
+    create_calendar(new Date());
 });
 
+
+const update_day_tasks_in_storage = (key, tasks) => {
+    let serialized = JSON.stringify(tasks);
+    localStorage.setItem(key, serialized);
+}
+
+
+const get_day_tasks_from_storage = (key) => {
+    let serialized = localStorage.getItem(key);
+    console.log(serialized);
+    if (serialized == null){
+        return [];
+    }
+    return JSON.parse(serialized);
+}
