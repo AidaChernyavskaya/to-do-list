@@ -91,15 +91,25 @@ function create_previous_calendar(){
 }
 
 function add_task(){
+    let current_id = get_value_from_storage('current_id');
+    if (current_id == null) {
+        current_id = 1;
+    } else {
+        current_id++;
+    }
+    set_value_from_storage('current_id', current_id);
+
     let task_obj = {
         title: document.getElementById('add_field').value,
-        done: false
+        done: false,
+        id: current_id
     }
 
+
     let key = generate_key_by_date(new Date());
-    let tasks = get_day_tasks_from_storage(key);
+    let tasks = get_json_from_storage(key);
     tasks.push(task_obj);
-    update_day_tasks_in_storage(key, tasks);
+    update_json_in_storage(key, tasks);
     update_current_day_tasks();
     document.getElementById('add_field').value = '';
 }
@@ -111,7 +121,7 @@ function update_current_day_tasks(){
 
 function show_current_date_tasks(){
     let key = generate_key_by_date(new Date());
-    let tasks = get_day_tasks_from_storage(key);
+    let tasks = get_json_from_storage(key);
     for (let i = 0; i < tasks.length; i++){
         show_task(tasks[i]);
     }
@@ -133,6 +143,7 @@ function show_task(current_day_task){
 
     let icon = document.createElement('div');
     icon.classList.add('icon');
+    icon.classList.add('id_' + current_day_task.id);
     task.appendChild(icon);
     let image=document.createElement('img');
     image.classList.add('trash');
@@ -185,17 +196,26 @@ window.addEventListener('resize',function(){
 });
 
 
-const update_day_tasks_in_storage = (key, tasks) => {
-    let serialized = JSON.stringify(tasks);
+const update_json_in_storage = (key, obj) => {
+    let serialized = JSON.stringify(obj);
     localStorage.setItem(key, serialized);
 }
 
 
-const get_day_tasks_from_storage = (key) => {
+const get_json_from_storage = (key) => {
     let serialized = localStorage.getItem(key);
     console.log(serialized);
     if (serialized == null){
         return [];
     }
     return JSON.parse(serialized);
+}
+
+
+const get_value_from_storage = (key) => {
+    return localStorage.getItem(key);
+}
+
+const set_value_from_storage = (key, value) => {
+    return localStorage.setItem(key, value);
 }
