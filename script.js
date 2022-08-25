@@ -1,15 +1,6 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 let k = 1; //offset
 
-// let tasks = {
-//     "24-8-2022": [
-//         {"title": "Помыть посуду", "done": false},
-//         {"title": "Покормить Виталечку", "done": true}
-//     ]
-// }
-
-// let current_date = Date();
-
 function html_ready() {
     create_calendar(new Date());
 
@@ -41,6 +32,8 @@ function calculate_elements_amount(days){
 
 // создадим и добавим "объекты" с текущей даты до...
 function create_day(days, date){
+    // if date < date: add class зачеркнутый
+    // if localStorage[generate_key_by_date()].lenght == 0: тускло
     let item = document.createElement('div');
     item.classList.add('date');
     days.appendChild(item);
@@ -143,7 +136,11 @@ function show_task(current_day_task){
 
     let icon = document.createElement('div');
     icon.classList.add('icon');
-    icon.classList.add('id_' + current_day_task.id);
+    // icon.id = ('id_' + current_day_task.id);
+    icon.onclick = () => {
+        delete_task(current_day_task.id);
+    }
+
     task.appendChild(icon);
     let image=document.createElement('img');
     image.classList.add('trash');
@@ -174,6 +171,48 @@ function init_events_handlers(){
     document.getElementById('add_button').onclick = add_task;
 }
 
+const update_json_in_storage = (key, obj) => {
+    let serialized = JSON.stringify(obj);
+    localStorage.setItem(key, serialized);
+}
+
+const get_json_from_storage = (key) => {
+    let serialized = localStorage.getItem(key);
+    if (serialized == null){
+        return [];
+    }
+    return JSON.parse(serialized);
+}
+
+const get_value_from_storage = (key) => {
+    return localStorage.getItem(key);
+}
+
+const set_value_from_storage = (key, value) => {
+    return localStorage.setItem(key, value);
+}
+
+function delete_task(task_id){
+    // получим ключ
+    let key = generate_key_by_date(new Date());
+
+    // получим массив тасков по ключу из локал стореджа
+    let tasks = get_json_from_storage(key);
+    console.log(tasks);
+    //удалим элемент task_id из массива
+    for(let i = 0; i < tasks.length; i++){
+        if (tasks[i]['id'] === task_id){
+            tasks.splice(i, 1);
+        }
+    }
+
+    // обновляем данные в локал сторедже
+    update_json_in_storage(key, tasks);
+
+    // обновлем отображение
+    update_current_day_tasks();
+}
+
 document.addEventListener("DOMContentLoaded", html_ready);
 
 // обработка нажатий клавиатуры
@@ -194,28 +233,3 @@ window.addEventListener('resize',function(){
     clear_calendar();
     create_calendar(new Date());
 });
-
-
-const update_json_in_storage = (key, obj) => {
-    let serialized = JSON.stringify(obj);
-    localStorage.setItem(key, serialized);
-}
-
-
-const get_json_from_storage = (key) => {
-    let serialized = localStorage.getItem(key);
-    console.log(serialized);
-    if (serialized == null){
-        return [];
-    }
-    return JSON.parse(serialized);
-}
-
-
-const get_value_from_storage = (key) => {
-    return localStorage.getItem(key);
-}
-
-const set_value_from_storage = (key, value) => {
-    return localStorage.setItem(key, value);
-}
