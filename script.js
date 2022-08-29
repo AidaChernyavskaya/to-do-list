@@ -1,5 +1,6 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 let k = 1; //offset
+let current_day = new Date();
 
 function html_ready() {
     create_calendar(new Date());
@@ -153,12 +154,28 @@ function show_task(current_day_task){
     task.appendChild(tick);
     tick.onclick = () => {
         mark_as_done(tick.parentNode);
+        change_done_parameter(current_day_task.id);
     }
 
 }
 
 function mark_as_done(task){
     task.classList.toggle('done');
+
+}
+
+function change_done_parameter(task_id){
+    let key = generate_key_by_date(new Date());
+    let tasks = get_json_from_storage(key);
+
+    for(let i = 0; i < tasks.length; i++){
+        if (tasks[i]['id'] === task_id){
+            tasks[i]['done'] = !(tasks[i]['done']);
+        }
+    }
+
+    update_json_in_storage(key, tasks);
+    update_current_day_tasks();
 }
 
 function generate_key_by_date(date) {
