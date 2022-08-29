@@ -1,6 +1,6 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 let k = 1; //offset
-let current_day = new Date();
+let current_date = new Date();
 
 function html_ready() {
     create_calendar(new Date());
@@ -13,6 +13,7 @@ function html_ready() {
 // создадим календарь
 function create_calendar(start_date) {
     let days = document.getElementById('days');
+    console.log(current_date, "inside create_calendar");
 
     // заполним дни в календаре
     let items_count = calculate_elements_amount(days);
@@ -20,6 +21,7 @@ function create_calendar(start_date) {
         create_day(days, start_date);
         start_date.setDate(start_date.getDate() + 1);
     }
+    console.log(current_date, "inside create_calendar after for");
 }
 
 // определим количество добавляемых элементов в зависимости от ширины экрана
@@ -61,25 +63,32 @@ function clear_tasks(){
 
 // "перелистывание" календаря на 1 день вперед
 function create_next_calendar(){
-    let current_date = new Date();
-    current_date.setDate(current_date.getDate() + k);
-    console.log(current_date);
+    let current_day = new Date(); //A
+
+    current_day.setDate(current_day.getDate() + k);
+    console.log(current_day);
+    current_date.setDate(current_day.getDate());
+
+    // current_date.setDate(current_day.getDate() + 3);
+    // current_day.setDate(current_day.getDate() + 2);
+    // console.log(current_day, current_date)
 
     clear_calendar();
-    create_calendar(current_date);
+    create_calendar(current_day);
 
     k++;
 }
 
 // "перелистывание" календаря на 1 день назад
 function create_previous_calendar(){
-    let current_date = new Date();
-    current_date.setDate(current_date.getDate() + k - 1);
-    current_date.setDate(current_date.getDate() - 1);
-    console.log(current_date);
+    let current_day = new Date();
+    current_day.setDate(current_day.getDate() + k - 1);
+    current_day.setDate(current_day.getDate() - 1);
+    console.log(current_day);
+    current_date = current_day; //
 
     clear_calendar();
-    create_calendar(current_date);
+    create_calendar(current_day);
 
     k--;
 }
@@ -101,6 +110,8 @@ function add_task(){
 
 
     let key = generate_key_by_date(new Date());
+    // console.log(current_date);
+    console.log(key);
     let tasks = get_json_from_storage(key);
     tasks.push(task_obj);
     update_json_in_storage(key, tasks);
@@ -236,6 +247,7 @@ document.addEventListener("DOMContentLoaded", html_ready);
 document.addEventListener('keydown', function(event) {
     if (event.key == 'ArrowRight') {
         create_next_calendar();
+        console.log(current_date, "after press button next");
     }
     if (event.key == 'ArrowLeft') {
         create_previous_calendar();
