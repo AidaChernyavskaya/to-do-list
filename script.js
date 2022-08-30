@@ -75,6 +75,7 @@ function create_next_calendar(){
 
     clear_calendar();
     create_calendar(current_day);
+    update_current_day_tasks();
 
     k++;
 }
@@ -94,6 +95,7 @@ function create_previous_calendar(){
 
     clear_calendar();
     create_calendar(current_day);
+    update_current_day_tasks();
 
     k--;
 }
@@ -114,9 +116,9 @@ function add_task(){
     }
 
 
-    let key = generate_key_by_date(new Date());
+    let key = generate_key_by_date(current_date);
     // console.log(current_date);
-    console.log(key);
+    console.log(key, "key while add task");
     let tasks = get_json_from_storage(key);
     tasks.push(task_obj);
     update_json_in_storage(key, tasks);
@@ -130,7 +132,7 @@ function update_current_day_tasks(){
 }
 
 function show_current_date_tasks(){
-    let key = generate_key_by_date(new Date());
+    let key = generate_key_by_date(current_date);
     let tasks = get_json_from_storage(key);
     for (let i = 0; i < tasks.length; i++){
         show_task(tasks[i]);
@@ -181,7 +183,7 @@ function mark_as_done(task){
 }
 
 function change_done_parameter(task_id){
-    let key = generate_key_by_date(new Date());
+    let key = generate_key_by_date(current_date);
     let tasks = get_json_from_storage(key);
 
     for(let i = 0; i < tasks.length; i++){
@@ -227,7 +229,7 @@ const set_value_from_storage = (key, value) => {
 
 function delete_task(task_id){
     // получим ключ
-    let key = generate_key_by_date(new Date());
+    let key = generate_key_by_date(current_date);
 
     // получим массив тасков по ключу из локал стореджа
     let tasks = get_json_from_storage(key);
