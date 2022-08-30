@@ -66,12 +66,12 @@ function create_next_calendar(){
     let current_day = new Date(); //A
 
     current_day.setDate(current_day.getDate() + k);
+    let year = current_day.getFullYear();
+    let month = current_day.getMonth();
+    let date = current_day.getDate();
     console.log(current_day);
-    current_date.setDate(current_day.getDate());
-
-    // current_date.setDate(current_day.getDate() + 3);
-    // current_day.setDate(current_day.getDate() + 2);
-    // console.log(current_day, current_date)
+    current_date.setFullYear(year, month, date);
+    console.log(current_date, "what i need - current_date after pressing next button");
 
     clear_calendar();
     create_calendar(current_day);
@@ -84,8 +84,13 @@ function create_previous_calendar(){
     let current_day = new Date();
     current_day.setDate(current_day.getDate() + k - 1);
     current_day.setDate(current_day.getDate() - 1);
+    let year = current_day.getFullYear();
+    let month = current_day.getMonth();
+    let date = current_day.getDate();
     console.log(current_day);
-    current_date = current_day; //
+    current_date.setFullYear(year, month, date);
+    console.log(current_date, "current_date after pressing previous button");
+
 
     clear_calendar();
     create_calendar(current_day);
