@@ -13,7 +13,6 @@ function html_ready() {
 // создадим календарь
 function create_calendar(start_date) {
     let days = document.getElementById('days');
-    console.log(current_date, "inside create_calendar");
 
     // заполним дни в календаре
     let items_count = calculate_elements_amount(days);
@@ -21,7 +20,6 @@ function create_calendar(start_date) {
         create_day(days, start_date);
         start_date.setDate(start_date.getDate() + 1);
     }
-    console.log(current_date, "inside create_calendar after for");
 }
 
 // определим количество добавляемых элементов в зависимости от ширины экрана
@@ -35,7 +33,6 @@ function calculate_elements_amount(days){
 
 // создадим и добавим "объекты" с текущей даты до...
 function create_day(days, date){
-    // if date < date: add class зачеркнутый
     // if localStorage[generate_key_by_date()].lenght == 0: тускло
     let item = document.createElement('div');
     item.classList.add('date');
@@ -50,6 +47,21 @@ function create_day(days, date){
     item_weekday.classList.add('weekday');
     item.appendChild(item_weekday);
     item_weekday.innerHTML = WEEKDAYS[date.getDay()];
+
+    let key = generate_key_by_date(date);
+    let arr = get_json_from_storage(key);
+    console.log(arr.length);
+    if (arr.length != 0){
+        let mark_if_exist_tasks = document.createElement('div');
+        mark_if_exist_tasks.classList.add('mark_if_exist_tasks');
+        item.appendChild(mark_if_exist_tasks);
+    }
+
+    let now = new Date();
+    let today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf();
+    if (date.valueOf() < today){
+        item.classList.add('past');
+    }
 }
 
 // очищаем элемент days
@@ -69,9 +81,7 @@ function create_next_calendar(){
     let year = current_day.getFullYear();
     let month = current_day.getMonth();
     let date = current_day.getDate();
-    console.log(current_day);
     current_date.setFullYear(year, month, date);
-    console.log(current_date, "what i need - current_date after pressing next button");
 
     clear_calendar();
     create_calendar(current_day);
@@ -88,10 +98,7 @@ function create_previous_calendar(){
     let year = current_day.getFullYear();
     let month = current_day.getMonth();
     let date = current_day.getDate();
-    console.log(current_day);
     current_date.setFullYear(year, month, date);
-    console.log(current_date, "current_date after pressing previous button");
-
 
     clear_calendar();
     create_calendar(current_day);
@@ -206,6 +213,9 @@ function init_events_handlers(){
     document.getElementById('add_button').onclick = add_task;
 }
 
+
+/* local storage */
+
 const update_json_in_storage = (key, obj) => {
     let serialized = JSON.stringify(obj);
     localStorage.setItem(key, serialized);
@@ -226,6 +236,8 @@ const get_value_from_storage = (key) => {
 const set_value_from_storage = (key, value) => {
     return localStorage.setItem(key, value);
 }
+
+/**/
 
 function delete_task(task_id){
     // получим ключ
@@ -269,3 +281,12 @@ window.addEventListener('resize',function(){
     clear_calendar();
     create_calendar(new Date());
 });
+
+
+
+/*
+* 1. UI-layer
+* 2. Data-layer
+* 3. Service-layer
+* 4. Utils-layer (a, b): return a + b;
+* */

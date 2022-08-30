@@ -119,10 +119,26 @@ input{
     border-radius: 5px;
     color: #6495ed;
     cursor: pointer;
+    position: relative;
 }
 
 .date:hover, .date:active{
     color: #25497b;
+}
+
+.past{
+    opacity: .5;
+}
+
+.mark_if_exist_tasks{
+    background-color: #6495ed;
+    box-shadow: 0 0 2px #25497b;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 .days{
