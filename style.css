@@ -95,6 +95,7 @@ input{
 
 .date:first-child{
     color: #25497b;
+    border: solid 2px #25497b;
 }
 
 .previous{

@@ -1,5 +1,5 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-let k = 1; //offset
+// let k = 1; //offset
 let current_date = new Date();
 
 function html_ready() {
@@ -13,12 +13,14 @@ function html_ready() {
 // создадим календарь
 function create_calendar(start_date) {
     let days = document.getElementById('days');
+    let tmp = new Date(start_date);
 
+    clear_calendar();
     // заполним дни в календаре
     let items_count = calculate_elements_amount(days);
     for (let i = 0; i < items_count; i++) {
-        create_day(days, start_date);
-        start_date.setDate(start_date.getDate() + 1);
+        create_day(days, tmp);
+        tmp.setDate(tmp.getDate() + 1);
     }
 }
 
@@ -33,10 +35,15 @@ function calculate_elements_amount(days){
 
 // создадим и добавим "объекты" с текущей даты до...
 function create_day(days, date){
-    // if localStorage[generate_key_by_date()].lenght == 0: тускло
     let item = document.createElement('div');
     item.classList.add('date');
     days.appendChild(item);
+    let copies_date = new Date(date.getTime());
+    item.onclick = () =>{
+        change_current_date(copies_date);
+        clear_calendar();
+        create_calendar(copies_date);
+    }
 
     let item_day = document.createElement('div');
     item_day.classList.add('number');
@@ -50,7 +57,6 @@ function create_day(days, date){
 
     let key = generate_key_by_date(date);
     let arr = get_json_from_storage(key);
-    console.log(arr.length);
     if (arr.length != 0){
         let mark_if_exist_tasks = document.createElement('div');
         mark_if_exist_tasks.classList.add('mark_if_exist_tasks');
@@ -73,38 +79,35 @@ function clear_tasks(){
     document.getElementById('tasks_elements').innerHTML = '';
 }
 
+function change_current_date(day){
+    let year = day.getFullYear();
+    let month = day.getMonth();
+    let date = day.getDate();
+    current_date.setFullYear(year, month, date);
+}
+
 // "перелистывание" календаря на 1 день вперед
 function create_next_calendar(){
-    let current_day = new Date(); //A
-
-    current_day.setDate(current_day.getDate() + k);
-    let year = current_day.getFullYear();
-    let month = current_day.getMonth();
-    let date = current_day.getDate();
-    current_date.setFullYear(year, month, date);
+    let current_day = current_date;
+    current_day.setDate(current_day.getDate() + 1);
+    change_current_date(current_day);
 
     clear_calendar();
     create_calendar(current_day);
     update_current_day_tasks();
 
-    k++;
 }
 
 // "перелистывание" календаря на 1 день назад
 function create_previous_calendar(){
-    let current_day = new Date();
-    current_day.setDate(current_day.getDate() + k - 1);
+    let current_day = current_date;
     current_day.setDate(current_day.getDate() - 1);
-    let year = current_day.getFullYear();
-    let month = current_day.getMonth();
-    let date = current_day.getDate();
-    current_date.setFullYear(year, month, date);
+    change_current_date(current_day);
 
     clear_calendar();
     create_calendar(current_day);
     update_current_day_tasks();
 
-    k--;
 }
 
 function add_task(){
@@ -186,7 +189,6 @@ function show_task(current_day_task){
 
 function mark_as_done(task){
     task.classList.toggle('done');
-
 }
 
 function change_done_parameter(task_id){
@@ -266,7 +268,6 @@ document.addEventListener("DOMContentLoaded", html_ready);
 document.addEventListener('keydown', function(event) {
     if (event.key == 'ArrowRight') {
         create_next_calendar();
-        console.log(current_date, "after press button next");
     }
     if (event.key == 'ArrowLeft') {
         create_previous_calendar();
@@ -289,4 +290,5 @@ window.addEventListener('resize',function(){
 * 2. Data-layer
 * 3. Service-layer
 * 4. Utils-layer (a, b): return a + b;
+*
 * */
