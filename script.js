@@ -166,8 +166,16 @@ function show_task(current_day_task){
     let icon = document.createElement('div');
     icon.classList.add('icon');
     // icon.id = ('id_' + current_day_task.id);
-    icon.onclick = () => {
-        delete_task(current_day_task.id);
+    icon.onclick = function() {
+        let ended = false;
+
+        task.addEventListener('transitionend', function (){
+            if (!ended) {
+                ended = true;
+                delete_task(current_day_task.id);
+            }
+        });
+        task.classList.add('task_disappeared');
     }
 
     task.appendChild(icon);

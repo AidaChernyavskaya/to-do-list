@@ -159,6 +159,13 @@ input{
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    height: 25px;
+    transition: all 0.5s;
+}
+
+.task_disappeared{
+    opacity: 0;
+    height: 0;
 }
 
 .tick{
