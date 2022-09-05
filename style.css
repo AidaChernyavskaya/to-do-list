@@ -190,15 +190,35 @@ input{
     height: 19px;
 }
 
+.arrows_for_drag_n_drop{
+    opacity: .6;
+    width: 17px;
+    height: 17px;
+    pointer-events: none;
+}
+
 .name{
     width: 93%;
 }
 
-.icon{
+.margin_for_drag_n_drop{
+    margin: 0 5px 0 0;
+    cursor: move;
+}
+
+.margin_for_delete{
     margin: 0 10px 0 5px;
+    cursor: pointer;
+}
+
+.selected{
+    opacity: .6;
+    background-color: red;
+}
+
+.icon{
     background-color: white;
     border-radius: 50%;
-    cursor: pointer;
     width: 26px;
     height: 26px;
     display: flex;

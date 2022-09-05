@@ -8,6 +8,8 @@ function html_ready() {
     init_events_handlers();
 
     show_current_date_tasks();
+
+    drag_element();
 }
 
 // создадим календарь
@@ -156,7 +158,20 @@ function show_task(current_day_task){
     if (current_day_task.done){
         task.classList.add('done');
     }
+    task.draggable = true;
     tasks_elements.appendChild(task);
+
+
+
+    let icon_for_drag_drop = document.createElement('div');
+    icon_for_drag_drop.classList.add('icon');
+    icon_for_drag_drop.classList.add('margin_for_drag_n_drop');
+    task.appendChild(icon_for_drag_drop);
+    let image_arrows=document.createElement('img');
+    image_arrows.classList.add('arrows_for_drag_n_drop');
+    image_arrows.src = './images/descendant.png';
+    image_arrows.alt = 'Передвинуть';
+    icon_for_drag_drop.appendChild(image_arrows);
 
     let name = document.createElement('div');
     name.classList.add('name');
@@ -165,6 +180,7 @@ function show_task(current_day_task){
 
     let icon = document.createElement('div');
     icon.classList.add('icon');
+    icon.classList.add('margin_for_delete');
     // icon.id = ('id_' + current_day_task.id);
     icon.onclick = function() {
         let ended = false;
@@ -193,6 +209,49 @@ function show_task(current_day_task){
         change_done_parameter(current_day_task.id);
     }
 
+}
+
+function drag_element(){
+    let key = generate_key_by_date(current_date);
+    let tasks = get_json_from_storage(key);
+
+    console.log(tasks);
+
+    let task_list_elements = document.querySelector('.tasks_elements');
+    console.log(task_list_elements);
+
+    // for (let i = 0; i < tasks.length; i++){
+    //     console.log(tasks[i]);
+    //
+    // }
+    task_list_elements.addEventListener('dragstart', (evt) =>{
+        evt.target.classList.add('selected');
+    });
+    task_list_elements.addEventListener('dragend', (evt) =>{
+        evt.target.classList.remove('selected');
+    });
+
+
+
+
+    task_list_elements.addEventListener('dragover', (evt) =>{
+        evt.preventDefault();
+
+        const active_element = task_list_elements.querySelector(".selected");
+        console.log(active_element);
+        const current_element = evt.target;
+        const is_moveable = active_element !== current_element &&
+            current_element.classList.contains('task');
+        if (!is_moveable){
+            return;
+        }
+
+        const next_element = (current_element === active_element.nextElementSibling) ?
+            current_element.nextElementSibling :
+            current_element;
+
+        task_list_elements.insertBefore(active_element, next_element);
+    })
 }
 
 function mark_as_done(task){
