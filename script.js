@@ -9,7 +9,7 @@ function html_ready() {
 
     show_current_date_tasks();
 
-    drag_element();
+    drag_n_drop_element();
 }
 
 // создадим календарь
@@ -113,6 +113,7 @@ function create_previous_calendar(){
 }
 
 function add_task(){
+    let task_obj = {};
     let current_id = get_value_from_storage('current_id');
     if (current_id == null) {
         current_id = 1;
@@ -121,12 +122,16 @@ function add_task(){
     }
     set_value_from_storage('current_id', current_id);
 
-    let task_obj = {
-        title: document.getElementById('add_field').value,
-        done: false,
-        id: current_id
+    let title_value = document.getElementById('add_field').value;
+    if (title_value != "" && title_value != " "){
+        task_obj = {
+            title: title_value,
+            done: false,
+            id: current_id
+        }
+    } else{
+        return;
     }
-
 
     let key = generate_key_by_date(current_date);
     // console.log(current_date);
@@ -211,19 +216,15 @@ function show_task(current_day_task){
 
 }
 
-function drag_element(){
+function drag_n_drop_element(){
     // let key = generate_key_by_date(current_date);
     // let tasks = get_json_from_storage(key);
     //
     // console.log(tasks);
 
     let task_list_elements = document.querySelector('.tasks_elements');
-    // console.log(task_list_elements);
 
-    // for (let i = 0; i < tasks.length; i++){
-    //     console.log(tasks[i]);
-    //
-    // }
+
     task_list_elements.addEventListener('dragstart', (evt) =>{
         evt.target.classList.add('selected');
     });
@@ -231,31 +232,19 @@ function drag_element(){
         evt.target.classList.remove('selected');
     });
 
-
-
-
     task_list_elements.addEventListener('dragover', (evt) =>{
         evt.preventDefault();
 
         const active_element = task_list_elements.querySelector(".selected");
-        // console.log(active_element);
         const current_element = evt.target;
-        const is_moveable = active_element !== current_element &&
-            current_element.classList.contains('task');
+        const is_moveable = active_element !== current_element && current_element.classList.contains('task');
         if (!is_moveable){
             return;
         }
 
-        // const next_element = (current_element === active_element.nextElementSibling) ?
-        //     current_element.nextElementSibling :
-        //     current_element;
         const next_element = get_next_element(evt.clientY, current_element);
 
-        if (
-            next_element &&
-            active_element === next_element.previousElementSibling ||
-            active_element === next_element
-        ) {
+        if (next_element && active_element === next_element.previousElementSibling || active_element === next_element) {
             return;
         }
 
