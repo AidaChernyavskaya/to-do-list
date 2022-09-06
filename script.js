@@ -212,13 +212,13 @@ function show_task(current_day_task){
 }
 
 function drag_element(){
-    let key = generate_key_by_date(current_date);
-    let tasks = get_json_from_storage(key);
-
-    console.log(tasks);
+    // let key = generate_key_by_date(current_date);
+    // let tasks = get_json_from_storage(key);
+    //
+    // console.log(tasks);
 
     let task_list_elements = document.querySelector('.tasks_elements');
-    console.log(task_list_elements);
+    // console.log(task_list_elements);
 
     // for (let i = 0; i < tasks.length; i++){
     //     console.log(tasks[i]);
@@ -238,7 +238,7 @@ function drag_element(){
         evt.preventDefault();
 
         const active_element = task_list_elements.querySelector(".selected");
-        console.log(active_element);
+        // console.log(active_element);
         const current_element = evt.target;
         const is_moveable = active_element !== current_element &&
             current_element.classList.contains('task');
@@ -246,12 +246,31 @@ function drag_element(){
             return;
         }
 
-        const next_element = (current_element === active_element.nextElementSibling) ?
-            current_element.nextElementSibling :
-            current_element;
+        // const next_element = (current_element === active_element.nextElementSibling) ?
+        //     current_element.nextElementSibling :
+        //     current_element;
+        const next_element = get_next_element(evt.clientY, current_element);
+
+        if (
+            next_element &&
+            active_element === next_element.previousElementSibling ||
+            active_element === next_element
+        ) {
+            return;
+        }
 
         task_list_elements.insertBefore(active_element, next_element);
     })
+}
+
+const get_next_element = (cursor_position, current_element) => {
+    const current_element_coord = current_element.getBoundingClientRect();
+    const current_element_center = current_element_coord.y + current_element_coord.height / 2;
+    const next_element = (cursor_position < current_element_center) ?
+        current_element :
+        current_element.nextElementSibling;
+
+    return next_element;
 }
 
 function mark_as_done(task){
