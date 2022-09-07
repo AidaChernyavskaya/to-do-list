@@ -135,7 +135,7 @@ function add_task(){
 
     let key = generate_key_by_date(current_date);
     // console.log(current_date);
-    console.log(key, "key while add task");
+    // console.log(key, "key while add task");
     let tasks = get_json_from_storage(key);
     tasks.push(task_obj);
     update_json_in_storage(key, tasks);
@@ -164,6 +164,7 @@ function show_task(current_day_task){
         task.classList.add('done');
     }
     task.draggable = true;
+    task.id = current_day_task.id;
     tasks_elements.appendChild(task);
 
 
@@ -216,6 +217,30 @@ function show_task(current_day_task){
 
 }
 
+function sort_elements_in_localStorage(){
+    let tasks_elements = document.querySelectorAll(".task");
+    // console.log(tasks_elements[1].id);
+
+    let key = generate_key_by_date(current_date);
+    let tasks = get_json_from_storage(key);
+    // console.log(tasks);
+    let tasks_obj = [];
+
+    for (let i = 0; i < tasks_elements.length; i++){
+        for (let j = 0; j < tasks.length; j++){
+            console.log(tasks_elements[i].id, 'on page');
+            console.log(tasks[j].id);
+            if (tasks_elements[i].id == tasks[j].id){
+                tasks_obj[i] = tasks[j];
+            }
+        }
+    }
+    // console.log(tasks);
+    // console.log(tasks_obj);
+
+    update_json_in_storage(key, tasks_obj);
+}
+
 function drag_n_drop_element(){
     // let key = generate_key_by_date(current_date);
     // let tasks = get_json_from_storage(key);
@@ -249,6 +274,7 @@ function drag_n_drop_element(){
         }
 
         task_list_elements.insertBefore(active_element, next_element);
+        sort_elements_in_localStorage();
     })
 }
 
