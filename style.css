@@ -191,6 +191,13 @@ input{
 .trash{
     width: 19px;
     height: 19px;
+    pointer-events: none;
+}
+
+.edit_img{
+    width: 17px;
+    height: 17px;
+    pointer-events: none;
 }
 
 .arrows_for_drag_n_drop{
@@ -202,6 +209,9 @@ input{
 
 .name{
     width: 93%;
+    font-size: 1.1rem;
+    color: #25497b;
+    cursor: auto;
 }
 
 .margin_for_drag_n_drop{
@@ -210,7 +220,12 @@ input{
 }
 
 .margin_for_delete{
-    margin: 0 10px 0 5px;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+}
+
+.margin_for_edit{
+    margin: 0 5px 0 0;
     cursor: pointer;
 }
 

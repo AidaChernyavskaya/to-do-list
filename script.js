@@ -179,10 +179,35 @@ function show_task(current_day_task){
     image_arrows.alt = 'Передвинуть';
     icon_for_drag_drop.appendChild(image_arrows);
 
-    let name = document.createElement('div');
+    // let name = document.createElement('div');
+    // name.classList.add('name');
+    // name.innerHTML = current_day_task.title;
+    // task.appendChild(name);
+
+    let name = document.createElement('input');
     name.classList.add('name');
-    name.innerHTML = current_day_task.title;
+    name.setAttribute('type', 'text');
+    name.value = current_day_task.title;
+    name.readOnly = 'readonly';
     task.appendChild(name);
+
+    let icon_for_edit = document.createElement('div');
+    icon_for_edit.classList.add('icon');
+    icon_for_edit.classList.add('margin_for_edit');
+    task.appendChild(icon_for_edit);
+    icon_for_edit.onclick = function (){
+        name.removeAttribute('readOnly');
+        name.focus();
+        image_edit.src = './images/close.png';
+        current_day_task.title = name.value;
+        console.log(current_day_task.title);
+
+    }
+    let image_edit = document.createElement('img');
+    image_edit.classList.add('trash');
+    image_edit.src = './images/edit.png';
+    image_edit.alt = 'Редактировать';
+    icon_for_edit.appendChild(image_edit);
 
     let icon = document.createElement('div');
     icon.classList.add('icon');
