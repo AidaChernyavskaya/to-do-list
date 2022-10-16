@@ -1,6 +1,10 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 // let k = 1; //offset
 let current_date = new Date();
+let flag = true;
+let task_id_global = 0;
+let task_name_global = null;
+let change_flag = true;
 
 function html_ready() {
     create_calendar(new Date());
@@ -189,18 +193,30 @@ function show_task(current_day_task){
     name.setAttribute('type', 'text');
     name.value = current_day_task.title;
     name.readOnly = 'readonly';
+    name.id = "name";
     task.appendChild(name);
 
     let icon_for_edit = document.createElement('div');
     icon_for_edit.classList.add('icon');
     icon_for_edit.classList.add('margin_for_edit');
     task.appendChild(icon_for_edit);
+    let current_name = name.value;
     icon_for_edit.onclick = function (){
+        change_flag = true;
         name.removeAttribute('readOnly');
         name.focus();
         image_edit.src = './images/close.png';
-        current_day_task.title = name.value;
-        console.log(current_day_task.title);
+
+        flag = false;
+        console.log(flag);
+
+        task_id_global = current_day_task.id;
+        console.log(task_id_global);
+
+        icon_for_edit.onclick = function (){
+            change_flag = false;
+            save_and_display_task();
+        }
 
     }
     let image_edit = document.createElement('img');
@@ -388,18 +404,45 @@ function delete_task(task_id){
     update_current_day_tasks();
 }
 
+function save_and_display_task(){
+    let key = generate_key_by_date(current_date);
+    let tasks = get_json_from_storage(key);
+    console.log(tasks);
+
+    let name = document.getElementById('name').value;
+    console.log(name, "---just value");
+
+    for(let i = 0; i < tasks.length; i++){
+        if (tasks[i]['id'] === task_id_global){
+            if(change_flag === true){
+                tasks[i]['title'] = name;
+            } else{
+                tasks[i]['title'] = tasks[i]['title'];
+            }
+        }
+    }
+
+    update_json_in_storage(key, tasks);
+    update_current_day_tasks();
+
+    flag = true;
+}
+
 document.addEventListener("DOMContentLoaded", html_ready);
 
 // обработка нажатий клавиатуры
 document.addEventListener('keydown', function(event) {
-    if (event.key == 'ArrowRight') {
+    if (event.key == 'ArrowRight' && flag == true) {
         create_next_calendar();
     }
-    if (event.key == 'ArrowLeft') {
+    if (event.key == 'ArrowLeft' && flag == true) {
         create_previous_calendar();
     }
-    if (event.key == 'Enter') {
+    if (event.key == 'Enter' && flag == true) {
         add_task();
+    }
+    if (event.key == 'Enter' && flag == false) {
+        save_and_display_task();
     }
 });
 
