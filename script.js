@@ -3,7 +3,6 @@ const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 let current_date = new Date();
 let flag = true;
 let task_id_global = 0;
-let task_name_global = null;
 let change_flag = true;
 
 function html_ready() {
@@ -47,8 +46,13 @@ function create_day(days, date){
     let copies_date = new Date(date.getTime());
     item.onclick = () =>{
         change_current_date(copies_date);
-        clear_calendar();
-        create_calendar(copies_date);
+
+
+        item.style.color = "#25497b";
+        item.style.border = "solid 2px #25497b";
+        // clear_calendar();
+        // create_calendar(copies_date);
+        update_current_day_tasks();
     }
 
     let item_day = document.createElement('div');
@@ -208,10 +212,7 @@ function show_task(current_day_task){
         image_edit.src = './images/close.png';
 
         flag = false;
-        console.log(flag);
-
         task_id_global = current_day_task.id;
-        console.log(task_id_global);
 
         icon_for_edit.onclick = function (){
             change_flag = false;
@@ -407,10 +408,8 @@ function delete_task(task_id){
 function save_and_display_task(){
     let key = generate_key_by_date(current_date);
     let tasks = get_json_from_storage(key);
-    console.log(tasks);
 
     let name = document.getElementById('name').value;
-    console.log(name, "---just value");
 
     for(let i = 0; i < tasks.length; i++){
         if (tasks[i]['id'] === task_id_global){
