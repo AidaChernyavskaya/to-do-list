@@ -1,7 +1,7 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май',
     'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-// let k = 1; //offset
+const COLORS = ['#b9d6ff', '#bae8ff'];
 let current_date = new Date();
 let flag = true;
 let task_id_global = 0;
@@ -76,6 +76,11 @@ function create_day(days, date){
     item_month.classList.add('month');
     item.appendChild(item_month);
     item_month.innerHTML = MONTHS[date.getMonth()];
+    if(date.getMonth() % 2 === 0){
+        item.style.backgroundColor = COLORS[0];
+    } else{
+        item.style.backgroundColor = COLORS[1];
+    }
 
     let key = generate_key_by_date(date);
     let arr = get_json_from_storage(key);
