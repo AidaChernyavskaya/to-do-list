@@ -19,7 +19,6 @@ function html_ready() {
 function create_calendar(start_date) {
     let days = document.getElementById('days');
     let tmp = new Date(start_date);
-
     clear_calendar();
     // заполним дни в календаре
     let items_count = calculate_elements_amount(days);
@@ -44,14 +43,17 @@ function create_day(days, date){
     item.classList.add('date');
     days.appendChild(item);
     let copies_date = new Date(date.getTime());
+
+    if (current_date.getTime() == date.getTime()){
+        item.classList.add('chosen_date');
+    }
     item.onclick = () =>{
         change_current_date(copies_date);
-
-
-        item.style.color = "#25497b";
-        item.style.border = "solid 2px #25497b";
-        // clear_calendar();
-        // create_calendar(copies_date);
+        let elements = document.getElementsByClassName('date')
+        for(let i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('chosen_date');
+        }
+        item.classList.add('chosen_date');
         update_current_day_tasks();
     }
 

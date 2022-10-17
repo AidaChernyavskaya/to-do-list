@@ -94,7 +94,7 @@ input{
     margin-top: -3px;
 }
 
-.date:first-child{
+.date.chosen_date{
     color: #25497b;
     border: solid 2px #25497b;
 }
