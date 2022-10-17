@@ -1,4 +1,6 @@
 const WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май',
+    'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 // let k = 1; //offset
 let current_date = new Date();
 let flag = true;
@@ -31,7 +33,7 @@ function create_calendar(start_date) {
 // определим количество добавляемых элементов в зависимости от ширины экрана
 function calculate_elements_amount(days){
     let width_container = days.offsetWidth;
-    let width_item = 60;
+    let width_item = 80;
     let items_count = Math.trunc(width_container / width_item);
 
     return(items_count);
@@ -44,7 +46,10 @@ function create_day(days, date){
     days.appendChild(item);
     let copies_date = new Date(date.getTime());
 
-    if (current_date.getTime() == date.getTime()){
+    let current_date_in_number = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate()).valueOf();
+    let date_in_number = new Date(date.getFullYear(), date.getMonth(), date.getDate()).valueOf();
+    if (current_date_in_number === date_in_number){
+        console.log("done");
         item.classList.add('chosen_date');
     }
     item.onclick = () =>{
@@ -66,6 +71,11 @@ function create_day(days, date){
     item_weekday.classList.add('weekday');
     item.appendChild(item_weekday);
     item_weekday.innerHTML = WEEKDAYS[date.getDay()];
+
+    let item_month = document.createElement('div');
+    item_month.classList.add('month');
+    item.appendChild(item_month);
+    item_month.innerHTML = MONTHS[date.getMonth()];
 
     let key = generate_key_by_date(date);
     let arr = get_json_from_storage(key);

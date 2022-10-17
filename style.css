@@ -94,6 +94,11 @@ input{
     margin-top: -3px;
 }
 
+.month{
+    font-size: 0.8rem;
+    margin-top: 0px;
+}
+
 .date.chosen_date{
     color: #25497b;
     border: solid 2px #25497b;
@@ -115,7 +120,7 @@ input{
 
 .date{
     background-color: #b9d6ff;
-    width: 50px;
+    width: 70px;
     margin: 0 5px;
     font-size: 0.9rem;
     text-align: center;
