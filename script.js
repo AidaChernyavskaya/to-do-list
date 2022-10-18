@@ -49,7 +49,6 @@ function create_day(days, date){
     let current_date_in_number = new Date(current_date.getFullYear(), current_date.getMonth(), current_date.getDate()).valueOf();
     let date_in_number = new Date(date.getFullYear(), date.getMonth(), date.getDate()).valueOf();
     if (current_date_in_number === date_in_number){
-        console.log("done");
         item.classList.add('chosen_date');
     }
     item.onclick = () =>{
@@ -214,7 +213,7 @@ function show_task(current_day_task){
     name.setAttribute('type', 'text');
     name.value = current_day_task.title;
     name.readOnly = 'readonly';
-    name.id = "name";
+    name.id = "name" + current_day_task.id;
     task.appendChild(name);
 
     let icon_for_edit = document.createElement('div');
@@ -223,19 +222,21 @@ function show_task(current_day_task){
     task.appendChild(icon_for_edit);
     let current_name = name.value;
     icon_for_edit.onclick = function (){
-        change_flag = true;
-        name.removeAttribute('readOnly');
-        name.focus();
-        image_edit.src = './images/close.png';
+        if (!(check_if_task_done(current_day_task.id))){
+            change_flag = true;
+            name.removeAttribute('readOnly');
+            name.focus();
+            image_edit.src = './images/close.png';
 
-        flag = false;
-        task_id_global = current_day_task.id;
+            flag = false;
+            task_id_global = current_day_task.id;
+            console.log(task_id_global, "global in onclick");
 
-        icon_for_edit.onclick = function (){
-            change_flag = false;
-            save_and_display_task();
+            icon_for_edit.onclick = function (){
+                change_flag = false;
+                save_and_display_task();
+            }
         }
-
     }
     let image_edit = document.createElement('img');
     image_edit.classList.add('trash');
@@ -365,6 +366,17 @@ function change_done_parameter(task_id){
     update_current_day_tasks();
 }
 
+function check_if_task_done(task_id){
+    let key = generate_key_by_date(current_date);
+    let tasks = get_json_from_storage(key);
+
+    for(let i = 0; i < tasks.length; i++){
+        if (tasks[i]['id'] === task_id){
+            return tasks[i]['done'];
+        }
+    }
+}
+
 function generate_key_by_date(date) {
     return `tasks_${date.getDate()}-${(date.getMonth() + 1)}-${date.getFullYear()}`;
 }
@@ -426,8 +438,10 @@ function save_and_display_task(){
     let key = generate_key_by_date(current_date);
     let tasks = get_json_from_storage(key);
 
-    let name = document.getElementById('name').value;
+    let name = document.getElementById("name" + task_id_global).value;
 
+    console.log(name);
+    console.log(task_id_global);
     for(let i = 0; i < tasks.length; i++){
         if (tasks[i]['id'] === task_id_global){
             if(change_flag === true){
